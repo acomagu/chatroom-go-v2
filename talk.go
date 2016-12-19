@@ -1,4 +1,4 @@
-package chatrooms
+package chatroom
 
 import (
 	"fmt"
@@ -6,13 +6,14 @@ import (
 
 // TopicChan includes chatroom channel, the channel pass the returned value from topic.
 type TopicChan struct {
-	Chatroom Room
+	Chatroom roomInternal
 	Return   chan bool
 }
 
+// Topic type is the function express a bunch of flow in chattting. Pass slice of this to New(), and the function called them in order. If one of them returns true, the loop breaks.
 type Topic func(Room) bool
 
-func (cr Chatrooms) talk(chatroom Room) {
+func (cr Chatroom) talk(chatroom roomInternal) {
 	topicChans := []TopicChan{}
 	for _, topic := range cr.topics {
 		topicChan := loopTopic(topic, chatroom)
@@ -23,7 +24,7 @@ func (cr Chatrooms) talk(chatroom Room) {
 	go controller(topicChans, changeDestTopicTo, broadcastPool, clearPool)
 }
 
-func controller(topicChans []TopicChan, changeDestTopicTo chan Room, broadcastPool chan bool, clearPool chan bool) {
+func controller(topicChans []TopicChan, changeDestTopicTo chan roomInternal, broadcastPool chan bool, clearPool chan bool) {
 	for {
 		for i, topicChan := range topicChans {
 			changeDestTopicTo <- topicChan.Chatroom
@@ -41,28 +42,28 @@ func controller(topicChans []TopicChan, changeDestTopicTo chan Room, broadcastPo
 }
 
 // This pipe stores messages from user with flowing next Chatroom(middleChatroom). And this provides functions, clearPool and broadcastPool. This is used in controller().
-func poolMessages(chatroom Room) (Room, chan bool, chan bool) {
-	middleChatroom := Room{
-		In:  make(chan Message),
-		Out: chatroom.Out,
+func poolMessages(chatroom roomInternal) (roomInternal, chan bool, chan bool) {
+	middleChatroom := roomInternal{
+		in:  make(chan interface{}),
+		out: chatroom.out,
 	}
 	clearPool := make(chan bool)
 	broadcastPool := make(chan bool)
 
-	go func(chatroom Room, middleChatroom Room, clearPool <-chan bool, broadcastPool <-chan bool) {
-		pool := []Message{}
+	go func(chatroom roomInternal, middleChatroom roomInternal, clearPool <-chan bool, broadcastPool <-chan bool) {
+		var pool []interface{}
 		for {
 			select {
-			case message := <-chatroom.In:
+			case message := <-chatroom.in:
 				pool = append(pool, message)
-				middleChatroom.In <- message
+				middleChatroom.in <- message
 
 			case <-clearPool:
-				pool = []Message{}
+				pool = pool[:0]
 
 			case <-broadcastPool:
 				for _, message := range pool {
-					middleChatroom.In <- message
+					middleChatroom.in <- message
 				}
 			}
 		}
@@ -72,20 +73,20 @@ func poolMessages(chatroom Room) (Room, chan bool, chan bool) {
 }
 
 // distributeMessage pass message from chatroom to chatroom. The chatroom of destination will change as needed, changed by value of channel, changeDestTopicTo.
-func distributeMessage(middleChatroom Room) chan Room {
-	changeDestTopicTo := make(chan Room)
+func distributeMessage(middleChatroom roomInternal) chan roomInternal {
+	changeDestTopicTo := make(chan roomInternal)
 
-	go func(middleChatroom Room, changeDestTopicTo <-chan Room) {
-		var dest Room
+	go func(middleChatroom roomInternal, changeDestTopicTo <-chan roomInternal) {
+		var dest roomInternal
 		dest = <-changeDestTopicTo
 		for {
 			select {
-			case message := <-middleChatroom.In:
-				if dest == (Room{}) {
+			case message := <-middleChatroom.in:
+				if dest == (roomInternal{}) {
 					fmt.Println("Error: the destination chatroom is not set.")
 					break
 				}
-				dest.In <- message
+				dest.in <- message
 
 			case _dest := <-changeDestTopicTo:
 				dest = _dest
@@ -97,11 +98,11 @@ func distributeMessage(middleChatroom Room) chan Room {
 }
 
 // loopTopic just loops topic.
-func loopTopic(topic Topic, chatroom Room) TopicChan {
+func loopTopic(topic Topic, chatroom roomInternal) TopicChan {
 	topicChan := TopicChan{
-		Chatroom: Room{
-			In:  make(chan Message),
-			Out: chatroom.Out,
+		Chatroom: roomInternal{
+			in:  make(chan interface{}),
+			out: chatroom.out,
 		},
 		Return: make(chan bool),
 	}

@@ -8,7 +8,7 @@ import (
 
 	"encoding/json"
 	"net/http"
-	"github.com/acomagu/chatroom"
+	"github.com/acomagu/chatroom-go/chatroom"
 )
 
 const slackIncomingWebhookURL = "<Slack Incoming Webhook URL>"

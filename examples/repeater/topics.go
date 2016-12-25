@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/acomagu/chatroom"
+	"github.com/acomagu/chatroom-go/chatroom"
 )
 
 func responseToNullpo(room chatrooms.Room) bool {

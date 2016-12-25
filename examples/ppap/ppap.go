@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/acomagu/chatroom"
+	"github.com/acomagu/chatroom-go/chatroom"
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 

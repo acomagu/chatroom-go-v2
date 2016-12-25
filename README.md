@@ -43,7 +43,7 @@ if !ok {
 
 Create instance for each user.
 
-## You're interested in?
+## Are you interested in?
 
 Read Reference and Examples!
 

@@ -14,7 +14,7 @@ You can write the awesome video as code like below:
 
 ![Source Code Sample](https://github.com/acomagu/chatroom-go/raw/master/img/Desktop.png)
 
-## Do you need more details?
+## Ah! ...Do you need more details?
 
 This library do only below:
 - Call function(Topic)

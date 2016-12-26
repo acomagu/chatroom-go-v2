@@ -46,7 +46,7 @@ if !ok {
 You write the actual code talking with users, waiting user's reaction and replying to them.
 
 ```Go
-func responseToNullpo(room chatrooms.Room) bool {
+func responseToNullpo(room chatrooms.Room) chatroom.DidTalk {
 	a := room.WaitTextMsg()
 	if a == "Nullpo" {
 		postToSlack("Ga")

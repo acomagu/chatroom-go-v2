@@ -16,7 +16,7 @@ You can write the awesome video as code like below:
 
 ## More Detail?
 
-This library do only this:
+This library do only below:
 - Call function(Topic)
 - Pass messages to topic through pipes.
 
@@ -26,7 +26,7 @@ But this library DON'T do below:
 - Manage states of each users
 - Communicate with chat service, Facebook, LINE and the like.
 
-So, if you must keep datas over Topic or by users, you must write a bit more code. Generaly it will be creating instances of Chatrom for each user and use closure for `Topic` funcs, or use global variables.
+So, if you must keep data over Topic or for each users, you must write a bit more code. Generaly it will be creating instances of Chatrom for each user and use closure for `Topic` funcs, or use global variables.
 
 ```Go
 cr, ok := crs[userID]

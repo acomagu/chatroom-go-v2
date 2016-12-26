@@ -79,7 +79,7 @@ Example on Slack bot:
 	})
 ```
 
-(The whole code: [examples/repeater/repeater.go](https://github.com/acomagu/chatroom-go/blob/master/examples/repeater/repeater.go))
+(The whole code: [examples/nullpo/nullpo.go](https://github.com/acomagu/chatroom-go/blob/master/examples/nullpo/nullpo.go))
 
 
 And you can use it to send to user. Call `Room#Send`, and you can receive it by `Chatroom#WaitSentMsg` or `Chatroom#WaitSentTextMsg`.

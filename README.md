@@ -60,7 +60,7 @@ The return value is whether talk with user or not. If it returns `false`, Chatro
 
 ## How can I dance the PPAP on LINE or Facebook?
 
-To pass messages from user to Chatroom library, use `Chatroom#Flush`.
+To pass the messages from user to Chatroom library, use `Chatroom#Flush`.
 
 Example on Slack bot:
 

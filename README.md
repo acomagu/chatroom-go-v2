@@ -79,7 +79,25 @@ Example on Slack bot:
 	})
 ```
 
-The whole code: [examples/repeater/repeater.go](https://github.com/acomagu/chatroom-go/blob/master/examples/repeater/repeater.go)
+(The whole code: [examples/repeater/repeater.go](https://github.com/acomagu/chatroom-go/blob/master/examples/repeater/repeater.go))
+
+
+And you can use it to send to user. Call `Room#Send`, and you can receive it by `Chatroom#WaitSentMsg` or `Chatroom#WaitSentTextMsg`.
+
+Example for LINE.
+
+```Go
+func sender(userID string, cr chatroom.Chatroom) {
+	for {
+		text := cr.WaitSentTextMsg()
+		bot.PushMessage(userID, linebot.NewTextMessage(text)).Do()
+	}
+}
+```
+
+(The whole code: [examples/ppap/ppap.go](https://github.com/acomagu/chatroom-go/blob/master/examples/ppap/ppap.go))
+
+You can exclude UserID from Topic functions by using this feature.
 
 ## Are you interested in?
 

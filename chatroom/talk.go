@@ -10,8 +10,11 @@ type TopicChan struct {
 	Return   chan bool
 }
 
+// DidTalk type is if does a Topic talk with user.
+type DidTalk bool
+
 // Topic type is the function express a bunch of flow in chattting. Pass slice of this to New(), and the function called them in order. If one of them returns true, the loop breaks.
-type Topic func(Room) bool
+type Topic func(Room) DidTalk
 
 func (cr Chatroom) talk(chatroom roomInternal) {
 	topicChans := []TopicChan{}
@@ -109,7 +112,7 @@ func loopTopic(topic Topic, chatroom roomInternal) TopicChan {
 
 	go func(topic Topic, topicChan TopicChan) {
 		for {
-			topicChan.Return <- topic(topicChan.Chatroom)
+			topicChan.Return <- bool(topic(topicChan.Chatroom))
 		}
 	}(topic, topicChan)
 

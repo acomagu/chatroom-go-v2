@@ -6,7 +6,7 @@ import (
 
 var topics = []chatroom.Topic{ppap}
 
-func ppap(room chatroom.Room) bool {
+func ppap(room chatroom.Room) chatroom.DidTalk {
 	if room.WaitTextMsg() != "PPAP" {
 		return false
 	}

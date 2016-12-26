@@ -19,8 +19,6 @@ type Slack struct {
 }
 
 func main() {
-	topics := []chatroom.Topic{responseToNullpo, responseToSegfo, responseToAny}
-
 	cr := chatroom.New(topics)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

@@ -1,7 +1,7 @@
 Chatroom
 ========
 
-Create readable chatbot quickly with Go.
+__Create readable chatbot quickly with Go.__
 
 ## Description
 A small library for chatbot for go.
@@ -14,7 +14,7 @@ You can write the awesome video as code like below:
 
 ![Source Code Sample](https://github.com/acomagu/chatroom-go/raw/master/img/Desktop.png)
 
-## More Detail?
+## Do you need more details?
 
 This library do only below:
 - Call function(Topic)

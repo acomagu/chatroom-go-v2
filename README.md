@@ -84,7 +84,7 @@ Example on Slack bot:
 
 And you can use it to send to user. Call `Room#Send`, and you can receive it by `Chatroom#WaitSentMsg` or `Chatroom#WaitSentTextMsg`.
 
-On the PPAP code:
+On the PPAP code(LINE):
 
 ```Go
 func sender(userID string, cr chatroom.Chatroom) {

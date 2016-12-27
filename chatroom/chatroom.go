@@ -32,7 +32,7 @@ func (cr Chatroom) WaitSentMsg() interface{} {
 	return text
 }
 
-// WaitSentTextMsg waits and returns the TEXT value. It ignores the others.
+// WaitSentTextMsg waits and returns the string value. It ignores the others.
 func (cr Chatroom) WaitSentTextMsg() string {
 	for {
 		if str, ok := cr.WaitSentMsg().(string); ok {
@@ -41,10 +41,12 @@ func (cr Chatroom) WaitSentTextMsg() string {
 	}
 }
 
+// WaitMsg waits and returns the message inputed by Chatroom#Flush.
 func (room roomInternal) WaitMsg() interface{} {
 	return <-room.in
 }
 
+// WaitMsg waits and returns the string message inputed by Chatroom#Flush. This ignores the other type values.
 func (room roomInternal) WaitTextMsg() string {
 	for {
 		if str, ok := (<-room.in).(string); ok {
@@ -53,6 +55,7 @@ func (room roomInternal) WaitTextMsg() string {
 	}
 }
 
+// Send inputs the value to be sent to user. It will be got by Chatroom#WaitSentMsg or Chatroom#WaitSentTextMsg.
 func (room roomInternal) Send(v interface{}) {
 	room.out <- v
 }

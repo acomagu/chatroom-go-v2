@@ -103,7 +103,9 @@ You can exclude UserID from Topic functions by using this feature.
 
 Read Reference and Examples!
 
-[https://github.com/acomagu/chatroom-go/tree/master/examples](https://github.com/acomagu/chatroom-go/tree/master/examples)
+[chatroom - GoDoc](https://godoc.org/github.com/acomagu/chatroom-go/chatroom)
+
+[chatroom-go/examples at master · acomagu/chatroom-go](https://github.com/acomagu/chatroom-go/tree/master/examples)
 
 ## Requirement
 - Golang

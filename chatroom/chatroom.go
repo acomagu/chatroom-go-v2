@@ -2,20 +2,19 @@ package chatroom
 
 import ()
 
-type Message string
-
 type roomInternal struct {
 	in  chan interface{}
 	out chan interface{}
 }
 
-// Chatroom has all functions and channels to be exported from this package.
+// A Chatroom has all functions and channels to be exported from this package.
 type Chatroom struct {
 	// Entry RoomEntry
 	topics []Topic
 	entry roomInternal
 }
 
+// A Room has functions to wait or send messages with user. This is passed to Topic function as argument.
 type Room interface {
 	WaitMsg() interface{}
 	WaitTextMsg() string
@@ -26,11 +25,13 @@ func (cr Chatroom) Flush(text string) {
 	cr.entry.in <- text
 }
 
+// WaitSentMsg waits and returns the value passed to all of Room#Send. Used to send messages to user (through chat service).
 func (cr Chatroom) WaitSentMsg() interface{} {
 	text := <-cr.entry.out
 	return text
 }
 
+// WaitSentTextMsg waits and returns the TEXT value. It ignores the others.
 func (cr Chatroom) WaitSentTextMsg() string {
 	for {
 		if str, ok := cr.WaitSentMsg().(string); ok {
@@ -55,6 +56,7 @@ func (room roomInternal) Send(v interface{}) {
 	room.out <- v
 }
 
+// New creates and initialize a Chatroom. This also starts a go-routine to pass messages to Topics.
 func New(topics []Topic) Chatroom {
 	_room := roomInternal{
 		in: make(chan interface{}),

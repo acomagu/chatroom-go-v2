@@ -10,7 +10,7 @@ type TopicChan struct {
 	Return   chan bool
 }
 
-// DidTalk type is if does a Topic talk with user.
+// A DidTalk means whether the Topic talks with user. A Topic function must return this type value.
 type DidTalk bool
 
 // Topic type is the function express a bunch of flow in chattting. Pass slice of this to New(), and the function called them in order. If one of them returns true, the loop breaks.

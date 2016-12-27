@@ -4,8 +4,8 @@ import (
 	"fmt"
 )
 
-// TopicChan includes chatroom channel, the channel pass the returned value from topic.
-type TopicChan struct {
+// topicChan includes chatroom channel, the channel pass the returned value from topic.
+type topicChan struct {
 	Chatroom roomInternal
 	Return   chan bool
 }
@@ -17,7 +17,7 @@ type DidTalk bool
 type Topic func(Room) DidTalk
 
 func (cr Chatroom) talk(chatroom roomInternal) {
-	topicChans := []TopicChan{}
+	topicChans := []topicChan{}
 	for _, topic := range cr.topics {
 		topicChan := loopTopic(topic, chatroom)
 		topicChans = append(topicChans, topicChan)
@@ -27,7 +27,7 @@ func (cr Chatroom) talk(chatroom roomInternal) {
 	go controller(topicChans, changeDestTopicTo, broadcastPool, clearPool)
 }
 
-func controller(topicChans []TopicChan, changeDestTopicTo chan roomInternal, broadcastPool chan bool, clearPool chan bool) {
+func controller(topicChans []topicChan, changeDestTopicTo chan roomInternal, broadcastPool chan bool, clearPool chan bool) {
 	for {
 		for i, topicChan := range topicChans {
 			changeDestTopicTo <- topicChan.Chatroom
@@ -101,8 +101,8 @@ func distributeMessage(middleChatroom roomInternal) chan roomInternal {
 }
 
 // loopTopic just loops topic.
-func loopTopic(topic Topic, chatroom roomInternal) TopicChan {
-	topicChan := TopicChan{
+func loopTopic(topic Topic, chatroom roomInternal) topicChan {
+	tc := topicChan{
 		Chatroom: roomInternal{
 			in:  make(chan interface{}),
 			out: chatroom.out,
@@ -110,11 +110,11 @@ func loopTopic(topic Topic, chatroom roomInternal) TopicChan {
 		Return: make(chan bool),
 	}
 
-	go func(topic Topic, topicChan TopicChan) {
+	go func(topic Topic, tc topicChan) {
 		for {
-			topicChan.Return <- bool(topic(topicChan.Chatroom))
+			tc.Return <- bool(topic(tc.Chatroom))
 		}
-	}(topic, topicChan)
+	}(topic, tc)
 
-	return topicChan
+	return tc
 }

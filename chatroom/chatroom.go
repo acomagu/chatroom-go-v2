@@ -16,8 +16,13 @@ type Chatroom struct {
 
 // A Room has functions to wait or send messages with user. This is passed to Topic function as argument.
 type Room interface {
+	// WaitMsg waits and returns the message inputed by Chatroom#Flush.
 	WaitMsg() interface{}
+
+	// WaitMsg waits and returns the string message inputed by Chatroom#Flush. This ignores the other type values.
 	WaitTextMsg() string
+
+	// Send inputs the value to be sent to user. It will be got by Chatroom#WaitSentMsg or Chatroom#WaitSentTextMsg.
 	Send(interface{})
 }
 
@@ -41,12 +46,10 @@ func (cr Chatroom) WaitSentTextMsg() string {
 	}
 }
 
-// WaitMsg waits and returns the message inputed by Chatroom#Flush.
 func (room roomInternal) WaitMsg() interface{} {
 	return <-room.in
 }
 
-// WaitMsg waits and returns the string message inputed by Chatroom#Flush. This ignores the other type values.
 func (room roomInternal) WaitTextMsg() string {
 	for {
 		if str, ok := (<-room.in).(string); ok {
@@ -55,7 +58,6 @@ func (room roomInternal) WaitTextMsg() string {
 	}
 }
 
-// Send inputs the value to be sent to user. It will be got by Chatroom#WaitSentMsg or Chatroom#WaitSentTextMsg.
 func (room roomInternal) Send(v interface{}) {
 	room.out <- v
 }

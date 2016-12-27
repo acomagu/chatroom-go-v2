@@ -21,8 +21,9 @@ type Room interface {
 	Send(interface{})
 }
 
-func (cr Chatroom) Flush(text string) {
-	cr.entry.in <- text
+// Flush inputs the value to be passed to Topic.
+func (cr Chatroom) Flush(v interface{}) {
+	cr.entry.in <- v
 }
 
 // WaitSentMsg waits and returns the value passed to all of Room#Send. Used to send messages to user (through chat service).

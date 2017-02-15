@@ -1,5 +1,6 @@
-Chatroom
+Chatroom [![godoc](https://img.shields.io/badge/reference-godoc-blue.svg)](https://godoc.org/github.com/acomagu/chatroom-go/chatroom)
 ========
+
 
 __Create readable chatbot quickly with Go.__
 

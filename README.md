@@ -1,8 +1,39 @@
 Chatroom [![godoc](https://img.shields.io/badge/reference-godoc-blue.svg)](https://godoc.org/github.com/acomagu/chatroom-go/chatroom)
 ========
 
-
 __Create readable chatbot quickly with Go.__
+
+```Go
+func ppap(room chatroom.Room) chatroom.DidTalk {
+	if msg, ok := (<-room.In); ok && msg != "PPAP" {
+		return false
+	}
+	room.Out <- "I have a pen."
+	room.Out <- "I have a/an ..."
+	apple, ok := (<-room.In).(string)
+	if !ok {
+		return true
+	}
+	room.Out <- "Ah!"
+	room.Out <- apple + "Pen!"
+
+	room.Out <- "I have a pen."
+	room.Out <- "I have a/an ..."
+	pineapple, ok := (<-room.In).(string)
+	if !ok {
+		return true
+	}
+	room.Out <- "Ah!"
+	room.Out <- pineapple + "Pen!"
+
+	room.Out <- apple + "Pen,"
+	room.Out <- pineapple + "Pen,"
+	room.Out <- "Ah!"
+
+	room.Out <- "Pen" + pineapple + apple + "Pen!"
+	return true
+}
+```
 
 ## Description
 A small library for chatbot for go.

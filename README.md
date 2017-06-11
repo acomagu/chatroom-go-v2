@@ -7,21 +7,11 @@ __Create readable chatbot quickly with Go.__
 ## Description
 A small library for chatbot for go.
 
-First, to understand properly this library, watch this:
-
-[![PPAP](http://img.youtube.com/vi/0E00Zuayv9Q/0.jpg)](http://www.youtube.com/watch?v=0E00Zuayv9Q)
-
-You can write the awesome video as code like below:
-
-![Source Code Sample](https://github.com/acomagu/chatroom-go/raw/master/img/Desktop.png)
-
-## Ah! ...Do you need more details?
-
 This library do only below:
 - Call function(Topic)
 - Pass messages to topic through pipes.
 
-As the above image, this library will omit the state managements on actual code. It can also be said "wrapper of simple channel pipelines".
+This library will omit the state managements on actual code. It can also be said "wrapper of simple channel pipelines".
 
 But this library DON'T do below:
 - Manage states of each users
@@ -42,13 +32,13 @@ if !ok {
 
 ## What is `Topic`?
 
-`Topic` is a function, includes a codes like above PPAP image.
+`Topic` is a function, logic of a unit of conversation with user.
 
 You write the actual code talking with users, waiting user's reaction and replying to them.
 
 ```Go
 func responseToNullpo(room chatrooms.Room) chatroom.DidTalk {
-	a := room.WaitTextMsg()
+	a := <-room.In
 	if a == "Nullpo" {
 		postToSlack("Ga")
 		return true
@@ -59,9 +49,9 @@ func responseToNullpo(room chatrooms.Room) chatroom.DidTalk {
 
 The return value is whether talk with user or not. If it returns `false`, Chatroom will call other Topic, but if it's `true`, Chatroom stops the calling.
 
-## How can I dance the PPAP on LINE or Facebook?
+## How to connect LINE or Facebook Messenger with this library
 
-To pass the messages from user to Chatroom library, use `Chatroom#Flush`.
+To pass the messages from user to Chatroom library, use `Chatroom#In`.
 
 Example on Slack bot:
 
@@ -75,7 +65,7 @@ Example on Slack bot:
 		}
 
 		// Pass the received message to Chatroom.
-		cr.Flush(getReceivedMessage(body))
+		cr.In <- getReceivedMessage(body)
 
 	})
 ```
@@ -83,14 +73,14 @@ Example on Slack bot:
 (The whole code: [examples/nullpo/nullpo.go](https://github.com/acomagu/chatroom-go/blob/master/examples/nullpo/nullpo.go))
 
 
-And you can use it to send to user. Call `Room#Send`, and you can receive it by `Chatroom#WaitSentMsg` or `Chatroom#WaitSentTextMsg`.
+And you can use it to send to user. Call `Room#Out`, and you can receive it by `Chatroom#Out`.
 
-On the PPAP code(LINE):
+For instance,
 
 ```Go
 func sender(userID string, cr chatroom.Chatroom) {
 	for {
-		text := cr.WaitSentTextMsg()
+		text := <-cr.Out
 		bot.PushMessage(userID, linebot.NewTextMessage(text)).Do()
 	}
 }
@@ -104,9 +94,9 @@ You can exclude UserID from Topic functions by using this feature.
 
 Read Reference and Examples!
 
-[chatroom - GoDoc](https://godoc.org/github.com/acomagu/chatroom-go/chatroom)
+[chatroom - GoDoc](https://godoc.org/github.com/acomagu/chatroom-go-v2/chatroom)
 
-[chatroom-go/examples at master · acomagu/chatroom-go](https://github.com/acomagu/chatroom-go/tree/master/examples)
+[chatroom-go/examples at master · acomagu/chatroom-go](https://github.com/acomagu/chatroom-go-v2/tree/master/examples)
 
 ## Requirement
 - Golang

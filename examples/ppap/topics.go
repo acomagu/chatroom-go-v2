@@ -1,31 +1,37 @@
 package main
 
 import (
-	"github.com/acomagu/chatroom-go/chatroom"
+	"github.com/acomagu/chatroom-go-v2/chatroom"
 )
 
 var topics = []chatroom.Topic{ppap}
 
 func ppap(room chatroom.Room) chatroom.DidTalk {
-	if room.WaitTextMsg() != "PPAP" {
+	if msg, ok := (<-room.In); ok && msg != "PPAP" {
 		return false
 	}
-	room.Send("I have a pen.")
-	room.Send("I have a/an ...")
-	apple := room.WaitTextMsg()
-	room.Send("Ah!")
-	room.Send(apple + "Pen!")
+	room.Out <- "I have a pen."
+	room.Out <- "I have a/an ..."
+	apple, ok := (<-room.In).(string)
+	if !ok {
+		return true
+	}
+	room.Out <- "Ah!"
+	room.Out <- apple + "Pen!"
 
-	room.Send("I have a pen.")
-	room.Send("I have a/an ...")
-	pineapple := room.WaitTextMsg()
-	room.Send("Ah!")
-	room.Send(pineapple + "Pen!")
+	room.Out <- "I have a pen."
+	room.Out <- "I have a/an ..."
+	pineapple, ok := (<-room.In).(string)
+	if !ok {
+		return true
+	}
+	room.Out <- "Ah!"
+	room.Out <- pineapple + "Pen!"
 
-	room.Send(apple + "Pen,")
-	room.Send(pineapple + "Pen,")
-	room.Send("Ah!")
+	room.Out <- apple + "Pen,"
+	room.Out <- pineapple + "Pen,"
+	room.Out <- "Ah!"
 
-	room.Send("Pen" + pineapple + apple + "Pen!")
+	room.Out <- "Pen" + pineapple + apple + "Pen!"
 	return true
 }

@@ -1,14 +1,13 @@
 package main
 
 import (
-	"github.com/acomagu/chatroom-go/chatroom"
+	"github.com/acomagu/chatroom-go-v2/chatroom"
 )
 
 var topics = []chatroom.Topic{responseToNullpo, responseToSegfo, responseToAny}
 
 func responseToNullpo(room chatroom.Room) chatroom.DidTalk {
-	a := room.WaitTextMsg()
-	if a == "Nullpo" {
+	if msg, ok := (<-room.In).(string); ok && msg == "Nullpo" {
 		postToSlack("Ga")
 		return true
 	}
@@ -16,8 +15,7 @@ func responseToNullpo(room chatroom.Room) chatroom.DidTalk {
 }
 
 func responseToSegfo(room chatroom.Room) chatroom.DidTalk {
-	a := room.WaitTextMsg()
-	if a == "Segfo" {
+	if msg, ok := (<-room.In).(string); ok && msg == "Segfo" {
 		postToSlack("Na")
 		return true
 	}

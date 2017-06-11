@@ -8,7 +8,7 @@ import (
 
 	"encoding/json"
 	"net/http"
-	"github.com/acomagu/chatroom-go/chatroom"
+	"github.com/acomagu/chatroom-go-v2/chatroom"
 )
 
 const slackIncomingWebhookURL = "<Slack Incoming Webhook URL>"
@@ -27,7 +27,7 @@ func main() {
 			return
 		}
 		// Pass the received message to Chatroom.
-		cr.Flush(getReceivedMessage(body))
+		cr.In <- getReceivedMessage(body)
 	})
 	http.ListenAndServe(":8000", nil)
 }

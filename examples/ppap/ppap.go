@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/acomagu/chatroom-go/chatroom"
+	"github.com/acomagu/chatroom-go-v2/chatroom"
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
@@ -36,12 +36,13 @@ func handleTextMsg(text string, userID string) {
 		crs[userID] = cr
 		go sender(userID, cr)
 	}
-	cr.Flush(text)
+	cr.In <- text
 }
 
 func sender(userID string, cr chatroom.Chatroom) {
 	for {
-		text := cr.WaitSentTextMsg()
-		bot.PushMessage(userID, linebot.NewTextMessage(text)).Do()
+		if text, ok := (<-cr.Out).(string); ok {
+			bot.PushMessage(userID, linebot.NewTextMessage(text)).Do()
+		}
 	}
 }

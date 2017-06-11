@@ -1,4 +1,4 @@
-Chatroom [![godoc](https://img.shields.io/badge/reference-godoc-blue.svg)](https://godoc.org/github.com/acomagu/chatroom-go/chatroom)
+Chatroom [![godoc](https://img.shields.io/badge/reference-godoc-blue.svg)](https://godoc.org/github.com/acomagu/chatroom-go-v2/chatroom)
 ========
 
 __Create readable chatbot quickly with Go.__
@@ -101,7 +101,7 @@ Example on Slack bot:
 	})
 ```
 
-(The whole code: [examples/nullpo/nullpo.go](https://github.com/acomagu/chatroom-go/blob/master/examples/nullpo/nullpo.go))
+(The whole code: [examples/nullpo/nullpo.go](https://github.com/acomagu/chatroom-go-v2/blob/master/examples/nullpo/nullpo.go))
 
 
 And you can use it to send to user. Call `Room#Out`, and you can receive it by `Chatroom#Out`.
@@ -117,7 +117,7 @@ func sender(userID string, cr chatroom.Chatroom) {
 }
 ```
 
-(The whole code: [examples/ppap/ppap.go](https://github.com/acomagu/chatroom-go/blob/master/examples/ppap/ppap.go))
+(The whole code: [examples/ppap/ppap.go](https://github.com/acomagu/chatroom-go-v2/blob/master/examples/ppap/ppap.go))
 
 You can exclude UserID from Topic functions by using this feature.
 
@@ -127,7 +127,7 @@ Read Reference and Examples!
 
 [chatroom - GoDoc](https://godoc.org/github.com/acomagu/chatroom-go-v2/chatroom)
 
-[chatroom-go/examples at master · acomagu/chatroom-go](https://github.com/acomagu/chatroom-go-v2/tree/master/examples)
+[chatroom-go-v2/examples at master · acomagu/chatroom-go](https://github.com/acomagu/chatroom-go-v2/tree/master/examples)
 
 ## Requirement
 - Golang

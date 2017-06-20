@@ -5,7 +5,7 @@ __Create readable chatbot quickly with Go.__
 
 ```Go
 func ppap(room chatroom.Room) chatroom.DidTalk {
-	if msg, ok := (<-room.In); ok && msg != "PPAP" {
+	if msg, ok := (<-room.In); !ok || msg != "PPAP" {
 		return false
 	}
 	room.Out <- "I have a pen."
@@ -54,10 +54,10 @@ So, if you must keep data over Topic or for each users, you must write a bit mor
 cr, ok := crs[userID]
 
 if !ok {
-  cr = chatroom.New(topics)
-  crs[userID] = cr
+	cr = chatroom.New(topics)
+	crs[userID] = cr
 
-  ...
+	...
 
 ```
 
@@ -69,8 +69,8 @@ You write the actual code talking with users, waiting user's reaction and replyi
 
 ```Go
 func responseToNullpo(room chatrooms.Room) chatroom.DidTalk {
-	a := <-room.In
-	if a == "Nullpo" {
+	msg := <-room.In
+	if text, ok := msg.(string); ok && text == "Nullpo" {
 		postToSlack("Ga")
 		return true
 	}
@@ -111,7 +111,7 @@ For instance,
 ```Go
 func sender(userID string, cr chatroom.Chatroom) {
 	for {
-		text := <-cr.Out
+		text, _ := (<-cr.Out).(string)
 		bot.PushMessage(userID, linebot.NewTextMessage(text)).Do()
 	}
 }
@@ -121,13 +121,11 @@ func sender(userID string, cr chatroom.Chatroom) {
 
 You can exclude UserID from Topic functions by using this feature.
 
-## Are you interested in?
+## Reference
 
-Read Reference and Examples!
+Godoc: [chatroom - GoDoc](https://godoc.org/github.com/acomagu/chatroom-go-v2/chatroom)
 
-[chatroom - GoDoc](https://godoc.org/github.com/acomagu/chatroom-go-v2/chatroom)
-
-[chatroom-go-v2/examples at master · acomagu/chatroom-go](https://github.com/acomagu/chatroom-go-v2/tree/master/examples)
+Examples: [chatroom-go-v2/examples at master · acomagu/chatroom-go](https://github.com/acomagu/chatroom-go-v2/tree/master/examples)
 
 ## Requirement
 - Golang

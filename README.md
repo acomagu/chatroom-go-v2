@@ -5,7 +5,7 @@ __Create readable chatbot quickly with Go.__
 
 ```Go
 func ppap(room chatroom.Room) chatroom.DidTalk {
-	if msg, ok := (<-room.In); !ok || msg != "PPAP" {
+	if msg, ok := (<-room.In).(string); !ok || msg != "PPAP" {
 		return false
 	}
 	room.Out <- "I have a pen."
@@ -69,8 +69,7 @@ You write the actual code talking with users, waiting user's reaction and replyi
 
 ```Go
 func responseToNullpo(room chatrooms.Room) chatroom.DidTalk {
-	msg := <-room.In
-	if text, ok := msg.(string); ok && text == "Nullpo" {
+	if text, ok := (<-room.In).(string); ok && text == "Nullpo" {
 		postToSlack("Ga")
 		return true
 	}

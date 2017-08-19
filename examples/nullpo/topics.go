@@ -23,7 +23,7 @@ func responseToSegfo(room chatroom.Room) chatroom.DidTalk {
 }
 
 func responseToAny(room chatroom.Room) chatroom.DidTalk {
-	_ = room.WaitTextMsg()
+	<-room.In
 	postToSlack("None")
 	return true
 }
